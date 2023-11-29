@@ -169,6 +169,44 @@ const addNewProductController = async (req: Request, res: Response) => {
   }
 }
 
+const getAllProductsController = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params
+    const isUserExists = await StaticUser.checkExists(userId)
+    if (!isUserExists) {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      })
+    } else {
+      // console.log(isUserExists)
+      if (!isUserExists.orders) {
+        res.status(200).json({
+          success: true,
+          message: 'This user has no order!',
+          data: null,
+        })
+      } else {
+        res.status(200).json({
+          success: true,
+          message: 'Order fetched successfully!',
+          data: isUserExists.orders,
+        })
+      }
+    }
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: 'Failed to add order data',
+      error: error,
+    })
+  }
+}
+
 export const UserControllers = {
   createUser,
   getAllUserController,
@@ -176,4 +214,5 @@ export const UserControllers = {
   updateUserController,
   deleteUserController,
   addNewProductController,
+  getAllProductsController,
 }

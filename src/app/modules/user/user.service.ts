@@ -1,4 +1,4 @@
-import { IOrder, IUser } from './user.interface'
+import { IUser } from './user.interface'
 import { StaticUser, UserModel } from './user.model'
 
 const createUserService = async (userData: IUser) => {
@@ -42,6 +42,11 @@ const addNewProductService = async (userId: string, updateData: IUser) => {
   return result
 }
 
+const getAllProductsService = async (userId: string) => {
+  const result = await StaticUser.findOne({ userId: userId }, { orders: 1 })
+  return result
+}
+
 export const UserServices = {
   createUserService,
   getAllUserService,
@@ -49,4 +54,5 @@ export const UserServices = {
   updateUserService,
   deleteUserService,
   addNewProductService,
+  getAllProductsService,
 }
