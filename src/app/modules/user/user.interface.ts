@@ -1,17 +1,20 @@
 import { Model } from 'mongoose'
 
+// Full name type
 export type IFullName = {
   firstName: string
   lastName: string
 }
 
+// Address type
 export type IAddress = {
   street: string
   city: string
   country: string
 }
 
-export type IOrders = {
+// Order type
+export type IOrder = {
   productName: string
   price: number
   quantity: number
@@ -27,7 +30,7 @@ export type IUser = {
   isActive: boolean
   hobbies: Array<string>
   address: IAddress
-  orders?: IOrders
+  orders?: Array<IOrder>
 }
 
 export interface UserStaticModel extends Model<IUser> {

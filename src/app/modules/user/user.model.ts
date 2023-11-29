@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose'
 import {
   IAddress,
   IFullName,
-  IOrders,
+  IOrder,
   IUser,
   UserStaticModel,
   // IUserMethods,
@@ -21,7 +21,7 @@ const addressSchema = new Schema<IAddress>({
   country: String,
 })
 
-const orderSchema = new Schema<IOrders>({
+const orderSchema = new Schema<IOrder>({
   productName: String,
   price: Number,
   quantity: Number,
@@ -37,7 +37,7 @@ const userSchema = new Schema<IUser, UserStaticModel>({
   isActive: Boolean,
   hobbies: Array<string>,
   address: addressSchema,
-  orders: orderSchema,
+  orders: [orderSchema],
 })
 
 userSchema.pre('save', async function (next) {

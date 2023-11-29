@@ -37,7 +37,7 @@ export const userValidation = z.object({
   isActive: z.boolean().default(true),
   hobbies: z.array(z.string()),
   address: addressValidation,
-  orders: orderValidation.optional(),
+  orders: z.array(orderValidation).optional(),
 })
 
 export default userValidation

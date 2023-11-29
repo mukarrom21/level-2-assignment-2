@@ -1,4 +1,4 @@
-import { IUser } from './user.interface'
+import { IOrder, IUser } from './user.interface'
 import { StaticUser, UserModel } from './user.model'
 
 const createUserService = async (userData: IUser) => {
@@ -27,8 +27,18 @@ const updateUserService = async (userId: string, updateData: IUser) => {
 }
 
 const deleteUserService = async (userId: string) => {
+  console.log(userId)
   const result = await StaticUser.findOneAndDelete({ userId: userId })
   console.log(result)
+  return result
+}
+
+const addNewProductService = async (userId: string, updateData: IUser) => {
+  const result = await StaticUser.findOneAndUpdate(
+    { userId: userId },
+    updateData,
+    { new: true },
+  )
   return result
 }
 
@@ -38,4 +48,5 @@ export const UserServices = {
   getSingleUserByUserIdService,
   updateUserService,
   deleteUserService,
+  addNewProductService,
 }
