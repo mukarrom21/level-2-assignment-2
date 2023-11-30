@@ -36,6 +36,6 @@ exports.userValidation = zod_1.z.object({
     isActive: zod_1.z.boolean().default(true),
     hobbies: zod_1.z.array(zod_1.z.string()),
     address: exports.addressValidation,
-    orders: exports.orderValidation.optional(),
+    orders: zod_1.z.array(exports.orderValidation).optional(),
 });
 exports.default = exports.userValidation;

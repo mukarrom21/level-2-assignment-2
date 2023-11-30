@@ -40,7 +40,7 @@ const userSchema = new mongoose_1.Schema({
     isActive: Boolean,
     hobbies: (Array),
     address: addressSchema,
-    orders: orderSchema,
+    orders: [orderSchema],
 });
 userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {

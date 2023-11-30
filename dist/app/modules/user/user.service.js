@@ -29,8 +29,17 @@ const updateUserService = (userId, updateData) => __awaiter(void 0, void 0, void
     return result;
 });
 const deleteUserService = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(userId);
     const result = yield user_model_1.StaticUser.findOneAndDelete({ userId: userId });
     console.log(result);
+    return result;
+});
+const addNewProductService = (userId, updateData) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.StaticUser.findOneAndUpdate({ userId: userId }, updateData, { new: true });
+    return result;
+});
+const getAllProductsService = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.StaticUser.findOne({ userId: userId }, { orders: 1 });
     return result;
 });
 exports.UserServices = {
@@ -39,4 +48,6 @@ exports.UserServices = {
     getSingleUserByUserIdService,
     updateUserService,
     deleteUserService,
+    addNewProductService,
+    getAllProductsService,
 };
