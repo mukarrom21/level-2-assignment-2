@@ -5,28 +5,31 @@ import {
   IOrder,
   IUser,
   UserStaticModel,
-  // IUserMethods,
 } from './user.interface'
 import bcrypt from 'bcrypt'
 import config from '../../config'
 
+// fullName mongoose schema model
 const fullNameSchema = new Schema<IFullName>({
   firstName: String,
   lastName: String,
 })
 
+// address mongoose schema model
 const addressSchema = new Schema<IAddress>({
   street: String,
   city: String,
   country: String,
 })
 
+// order mongoose schema model
 const orderSchema = new Schema<IOrder>({
   productName: String,
   price: Number,
   quantity: Number,
 })
 
+// user mongoose schema model
 const userSchema = new Schema<IUser, UserStaticModel>({
   userId: { type: Number, unique: true },
   username: { type: String, unique: true },
@@ -37,7 +40,7 @@ const userSchema = new Schema<IUser, UserStaticModel>({
   isActive: Boolean,
   hobbies: Array<string>,
   address: addressSchema,
-  orders: [orderSchema],
+  orders: { type: [orderSchema], default: undefined },
 })
 
 userSchema.pre('save', async function (next) {

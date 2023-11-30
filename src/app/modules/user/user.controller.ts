@@ -34,7 +34,7 @@ const getAllUserController = async (req: Request, res: Response) => {
 
     res.status(201).json({
       success: true,
-      message: `Successfully retrieved ${result.length} data`,
+      message: 'Users fetched successfully!',
       data: result,
     })
   } catch (error) {

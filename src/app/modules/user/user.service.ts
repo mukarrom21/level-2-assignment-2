@@ -16,7 +16,10 @@ const createUserService = async (userData: IUser) => {
 // Service to retrieve all users
 const getAllUserService = async () => {
   // Find all user documents in the UserModel
-  const result = await UserModel.find()
+  const result = await UserModel.find(
+    {},
+    { _id: 0, username: 1, fullName: 1, age: 1, email: 1, address: 1 },
+  )
 
   return result
 }

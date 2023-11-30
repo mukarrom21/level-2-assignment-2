@@ -66,7 +66,7 @@ const getAllUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         const result = yield user_service_1.UserServices.getAllUserService();
         res.status(201).json({
             success: true,
-            message: `Successfully retrieved ${result.length} data`,
+            message: 'Users fetched successfully!',
             data: result,
         });
     }

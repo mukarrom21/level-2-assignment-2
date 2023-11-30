@@ -16,20 +16,24 @@ exports.UserModel = exports.StaticUser = void 0;
 const mongoose_1 = require("mongoose");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = __importDefault(require("../../config"));
+// fullName mongoose schema model
 const fullNameSchema = new mongoose_1.Schema({
     firstName: String,
     lastName: String,
 });
+// address mongoose schema model
 const addressSchema = new mongoose_1.Schema({
     street: String,
     city: String,
     country: String,
 });
+// order mongoose schema model
 const orderSchema = new mongoose_1.Schema({
     productName: String,
     price: Number,
     quantity: Number,
 });
+// user mongoose schema model
 const userSchema = new mongoose_1.Schema({
     userId: { type: Number, unique: true },
     username: { type: String, unique: true },
@@ -40,7 +44,7 @@ const userSchema = new mongoose_1.Schema({
     isActive: Boolean,
     hobbies: (Array),
     address: addressSchema,
-    orders: [orderSchema],
+    orders: { type: [orderSchema], default: undefined },
 });
 userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
