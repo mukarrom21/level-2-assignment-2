@@ -2,20 +2,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userValidation = exports.orderValidation = exports.addressValidation = exports.fullNameValidation = void 0;
 const zod_1 = require("zod");
+// Validation schema for full name
 exports.fullNameValidation = zod_1.z.object({
     firstName: zod_1.z.string().min(1, { message: 'First name is required' }),
     lastName: zod_1.z.string().min(1, { message: 'Last name is required' }),
 });
+// Validation schema for address
 exports.addressValidation = zod_1.z.object({
     street: zod_1.z.string().min(1, { message: 'street is required' }),
     city: zod_1.z.string().min(1, { message: 'city is required' }),
     country: zod_1.z.string().min(1, { message: 'country is required' }),
 });
+// Validation schema for an order
 exports.orderValidation = zod_1.z.object({
     productName: zod_1.z.string().min(1, { message: 'product name is required' }),
     price: zod_1.z.number().min(1, { message: 'price is required' }),
     quantity: zod_1.z.number().min(1, { message: 'quantity is required' }),
 });
+// Validation schema for a user
 exports.userValidation = zod_1.z.object({
     userId: zod_1.z.number({
         required_error: 'User id is required',
@@ -38,4 +42,5 @@ exports.userValidation = zod_1.z.object({
     address: exports.addressValidation,
     orders: zod_1.z.array(exports.orderValidation).optional(),
 });
+// Export the user validation schema
 exports.default = exports.userValidation;

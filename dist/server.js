@@ -15,17 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const app_1 = __importDefault(require("./app"));
 const config_1 = __importDefault(require("./app/config"));
+// Define an asynchronous function to connect to MongoDB and start the Express server
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            // Connect to MongoDB using the database URI from the configuration
             yield mongoose_1.default.connect(config_1.default.database_uri);
             app_1.default.listen(config_1.default.port, () => {
                 console.log(`Server is running on port: ${config_1.default.port}`);
             });
         }
         catch (error) {
+            // Handle errors during the MongoDB connection or server startup
             console.log(error);
         }
     });
 }
+// call main function
 main();

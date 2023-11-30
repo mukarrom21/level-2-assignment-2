@@ -36,10 +36,14 @@ exports.UserControllers = void 0;
 const user_validation_1 = __importStar(require("./user.validation"));
 const user_service_1 = require("./user.service");
 const user_model_1 = require("./user.model");
+// Controller for creating a new user
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        // validate user input using ZOD validation
         const zodParsedData = user_validation_1.default.parse(req.body);
+        // Call the user service to create a new user
         const result = yield user_service_1.UserServices.createUserService(zodParsedData);
+        // Respond with success message and created user data
         res.status(201).json({
             success: true,
             message: 'User created successfully!',
@@ -47,6 +51,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
     catch (error) {
+        // Handle errors during user creation
         res.status(400).json({
             success: false,
             message: 'Failed to create the user',
@@ -54,8 +59,10 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
 });
+// Controller for retrieving all users
 const getAllUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        // Call the user service to retrieve all users
         const result = yield user_service_1.UserServices.getAllUserService();
         res.status(201).json({
             success: true,
@@ -64,7 +71,7 @@ const getAllUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
     catch (error) {
-        console.log(error);
+        // Handle errors during user retrieval
         res.status(400).json({
             success: false,
             message: 'Failed to retrieved data',
@@ -72,11 +79,14 @@ const getAllUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
 });
+// Controller for retrieving a single user by userId
 const getSingleUserByUserIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
+        // Check if the user exists
         const isUserExists = yield user_model_1.StaticUser.checkExists(userId);
         if (!isUserExists) {
+            // Response if the user is not found
             res.status(404).json({
                 success: false,
                 message: 'User not found',
@@ -87,7 +97,9 @@ const getSingleUserByUserIdController = (req, res) => __awaiter(void 0, void 0, 
             });
         }
         else {
+            // Call the user service to retrieve a single user by userId
             const result = yield user_service_1.UserServices.getSingleUserByUserIdService(userId);
+            // Response with success message and retrieved user data
             res.status(201).json({
                 success: true,
                 message: 'User retrieved successfully!',
@@ -96,6 +108,7 @@ const getSingleUserByUserIdController = (req, res) => __awaiter(void 0, void 0, 
         }
     }
     catch (error) {
+        // Handle errors during user retrieval
         res.status(404).json({
             success: false,
             message: 'User retrieved failed!',
@@ -103,15 +116,17 @@ const getSingleUserByUserIdController = (req, res) => __awaiter(void 0, void 0, 
         });
     }
 });
-// update a user controller
+// Controller for updating single user
 const updateUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
         const updateData = req.body;
-        // validate with zod validation for user data
+        // validate with zod validation for user input
         const zodParsedData = user_validation_1.default.parse(updateData);
+        // check if user not exists
         const isUserExists = yield user_model_1.StaticUser.checkExists(userId);
         if (!isUserExists) {
+            // Response 404 if user not found
             res.status(404).json({
                 success: false,
                 message: 'User not found',
@@ -122,9 +137,12 @@ const updateUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
             });
         }
         else {
+            // call user service for updating user
             const result = yield user_service_1.UserServices.updateUserService(userId, zodParsedData);
+            // Remove the password from the response data for security reasons
             const sanitizedUser = Object.assign({}, result === null || result === void 0 ? void 0 : result.toObject());
             delete sanitizedUser.password;
+            //  Response with success message and updated user data
             res.status(201).json({
                 success: true,
                 message: 'User updated successfully!',
@@ -133,6 +151,7 @@ const updateUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
     }
     catch (error) {
+        // Handle errors during user update
         res.status(400).json({
             success: false,
             message: 'Failed to update data',
@@ -140,11 +159,14 @@ const updateUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
 });
+// Controller for deleting a user
 const deleteUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
+        // Check if the user exists
         const isUserExists = yield user_model_1.StaticUser.checkExists(userId);
         if (!isUserExists) {
+            // Respond  404 error if user is not found
             res.status(404).json({
                 success: false,
                 message: 'User not found',
@@ -155,7 +177,9 @@ const deleteUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
             });
         }
         else {
+            // Call the user service to delete the user
             yield user_service_1.UserServices.deleteUserService(userId);
+            // Respond with success message for user deletion
             res.status(201).json({
                 success: true,
                 message: 'User deleted successfully!',
@@ -164,6 +188,7 @@ const deleteUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
     }
     catch (error) {
+        // Handle errors during user deletion
         res.status(400).json({
             success: false,
             message: 'Failed to deleted data',
@@ -171,14 +196,16 @@ const deleteUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
 });
-// add new order in user data controller
-const addNewProductController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Controller for adding a new order to a user
+const addNewOrderController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
-        // validate with zod validation for user data
+        // Validate order input using Zod validation
         const zodParsedOrderData = user_validation_1.orderValidation.parse(req.body);
+        // Check if the user exists
         const isUserExists = yield user_model_1.StaticUser.checkExists(userId);
         if (!isUserExists) {
+            // Respond with a 404 error if the user is not found
             res.status(404).json({
                 success: false,
                 message: 'User not found',
@@ -189,12 +216,14 @@ const addNewProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
             });
         }
         else {
-            // console.log(isUserExists)
+            // Check if the user has an existing 'orders' array; if not, create it
             if (!isUserExists.orders) {
                 isUserExists.orders = [];
             }
+            // Add the new order to the 'orders' array and call the service to update the user
             isUserExists.orders.push(zodParsedOrderData);
             yield user_service_1.UserServices.addNewProductService(userId, isUserExists);
+            // Respond with success message for order creation
             res.status(200).json({
                 success: true,
                 message: 'Order created successfully!',
@@ -203,6 +232,7 @@ const addNewProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
         }
     }
     catch (error) {
+        // Handle errors during order addition
         res.status(400).json({
             success: false,
             message: 'Failed to add order data',
@@ -210,13 +240,15 @@ const addNewProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
         });
     }
 });
-// Retrieve all orders of the user controller
+// Controller for retrieving all orders of a user
 const getAllOrdersController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const { userId } = req.params;
+        // Check if the user exists
         const isUserExists = yield user_model_1.StaticUser.checkExists(userId);
         if (!isUserExists) {
+            // Respond with a 404 error if the user is not found
             res.status(404).json({
                 success: false,
                 message: 'User not found',
@@ -227,6 +259,7 @@ const getAllOrdersController = (req, res) => __awaiter(void 0, void 0, void 0, f
             });
         }
         else {
+            // check if the user has not order property or empty array
             if (!isUserExists.orders || ((_a = isUserExists.orders) === null || _a === void 0 ? void 0 : _a.length) === 0) {
                 res.status(200).json({
                     success: true,
@@ -235,6 +268,7 @@ const getAllOrdersController = (req, res) => __awaiter(void 0, void 0, void 0, f
                 });
             }
             else {
+                // Respond with success message and the list of orders
                 res.status(200).json({
                     success: true,
                     message: 'Order fetched successfully!',
@@ -244,6 +278,7 @@ const getAllOrdersController = (req, res) => __awaiter(void 0, void 0, void 0, f
         }
     }
     catch (error) {
+        // Handle errors during order retrieval
         res.status(400).json({
             success: false,
             message: 'Failed to add order data',
@@ -251,11 +286,12 @@ const getAllOrdersController = (req, res) => __awaiter(void 0, void 0, void 0, f
         });
     }
 });
-// calculate total price of all orders controller
+// Controller for calculating the total price of all orders for a user
 const totalPriceOfOrdersController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     try {
         const { userId } = req.params;
+        // check if the user exists
         const isUserExists = yield user_model_1.StaticUser.checkExists(userId);
         if (!isUserExists) {
             res.status(404).json({
@@ -268,7 +304,7 @@ const totalPriceOfOrdersController = (req, res) => __awaiter(void 0, void 0, voi
             });
         }
         else {
-            // console.log(isUserExists)
+            // check if the user has not order property or empty array
             if (!isUserExists.orders || ((_b = isUserExists.orders) === null || _b === void 0 ? void 0 : _b.length) === 0) {
                 res.status(200).json({
                     success: true,
@@ -277,7 +313,9 @@ const totalPriceOfOrdersController = (req, res) => __awaiter(void 0, void 0, voi
                 });
             }
             else {
+                // Calculate the total price of all orders
                 const totalPrice = isUserExists.orders.reduce((total, order) => total + order.price * order.quantity, 0);
+                // Calculate the total price of all orders
                 res.status(200).json({
                     success: true,
                     message: 'Total price calculated successfully!',
@@ -287,6 +325,7 @@ const totalPriceOfOrdersController = (req, res) => __awaiter(void 0, void 0, voi
         }
     }
     catch (error) {
+        // Handle errors during total price calculation
         res.status(400).json({
             success: false,
             message: 'Failed to calculate orders total price',
@@ -294,13 +333,14 @@ const totalPriceOfOrdersController = (req, res) => __awaiter(void 0, void 0, voi
         });
     }
 });
+// Export all user controller
 exports.UserControllers = {
     createUser,
     getAllUserController,
     getSingleUserByUserIdController,
     updateUserController,
     deleteUserController,
-    addNewProductController,
-    getAllProductsController: getAllOrdersController,
+    addNewOrderController,
+    getAllOrdersController,
     totalPriceOfOrdersController,
 };
