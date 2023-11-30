@@ -20,6 +20,7 @@ export type IOrder = {
   quantity: number
 }
 
+// user type
 export type IUser = {
   userId: number
   username: string
@@ -33,6 +34,7 @@ export type IUser = {
   orders?: Array<IOrder>
 }
 
+// interface for the UserStaticModel that extends the mongoose Model
 export interface UserStaticModel extends Model<IUser> {
   checkExists(userId: string): Promise<IUser | null>
 }

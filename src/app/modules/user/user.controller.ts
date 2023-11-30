@@ -149,8 +149,10 @@ const deleteUserController = async (req: Request, res: Response) => {
         },
       })
     } else {
-      // call the user service to delete the user
+      // Call the user service to delete the user
       await UserServices.deleteUserService(userId)
+
+      // Respond with success message for user deletion
       res.status(201).json({
         success: true,
         message: 'User deleted successfully!',
@@ -158,6 +160,7 @@ const deleteUserController = async (req: Request, res: Response) => {
       })
     }
   } catch (error) {
+    // Handle errors during user deletion
     res.status(400).json({
       success: false,
       message: 'Failed to deleted data',
